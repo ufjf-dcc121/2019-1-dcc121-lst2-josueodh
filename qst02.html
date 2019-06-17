@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Pilha</title>
+</head>
+
+<body>
+    <h1>Pilha</h1>
+    <form name="pilha">
+        <label>Valor</label>
+        <input type="text" name="entrada">
+        <button type="submit">Empilha</button>
+    </form>
+    <button type="reset">Desempilha</button>
+    <ul>
+
+    </ul>
+    <script>
+        var pilhas = [];
+        var lista = document.getElementsByTagName("ul")[0];
+        var botao = document.getElementsByTagName("button")[1];
+        botao.addEventListener("click", desempilha);
+
+        document.forms.pilha.addEventListener("submit", empilha);
+        function empilha(e) {
+            e.preventDefault();
+            var valor = document.forms.pilha.entrada.value;
+            var novoValor = { "valor": valor };
+            pilhas.push(novoValor);
+            var novoLi = document.createElement("li");
+            novoLi.textContent = novoValor.valor;
+            lista.appendChild(novoLi);
+            document.forms.pilha.reset();
+        }
+        function desempilha() {
+            var removeLi = document.getElementsByTagName("li")[pilhas.length-1];
+            lista.removeChild(removeLi);
+            pilhas.pop()
+        }
+
+    </script>
+</body>
+
+</html>

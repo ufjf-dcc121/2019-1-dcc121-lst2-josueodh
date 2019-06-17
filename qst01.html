@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 07</title>
+</head>
+
+<body>
+    <h1>Cadastro de produtos</h1>
+    <form name="produto">
+        <label>Quantidade</label>
+        <input type="number" name="quantidade">
+        <label>Item</label>
+        <input type="text" name="item">
+        <input type="submit">
+    </form>
+    <button type="reset">Apagar</button>
+    <ul>
+
+    </ul>
+
+</body>
+
+<script>
+
+    var produtos = [];
+    var lista = document.getElementsByTagName("ul")[0];
+    document.forms.produto.addEventListener("submit", processaEnvio);
+    var botao = document.getElementsByTagName("button")[0];
+    botao.addEventListener("click" , remove);
+    function processaEnvio(e) {
+        e.preventDefault();
+
+        var quantidade = document.forms.produto.quantidade.value;
+        var item = document.forms.produto.item.value;
+        var novoProduto = { "quantidade": quantidade, "item": item };
+        produtos.push(novoProduto);
+
+        var novoLi = document.createElement("li");
+        novoLi.textContent = novoProduto.quantidade + ", " + item + ".";
+
+        lista.appendChild(novoLi);
+
+        document.forms.produto.reset();
+        document.forms.produto.quantidade.focus();
+    }
+    function remove(){
+        var apaga = document.querySelectorAll("li");
+        for (let index = produtos.length; index > 0 ; index--) {
+                lista.removeChild(apaga[index-1]);
+                produtos.pop();   
+        }
+       
+    }
+</script>
+
+</html>

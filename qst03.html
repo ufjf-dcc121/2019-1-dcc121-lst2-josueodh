@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Questão 03</title>
+</head>
+
+<body>
+    <form name="convidado">
+        <label>Nome: </label>
+        <input type="text" name="nome" required placeholder="Digite o nome aqui">
+        <label>Idade: </label>
+        <input type="number" name="idade" required placeholder="Digite a idade aqui">
+        <input type="submit">
+    </form>
+    <h2>Adulto</h2>
+    <ul>
+
+    </ul>
+    <h2>Estudante</h2>
+    <ul>
+
+    </ul>
+    <script>
+        var adulto = [];
+        var estudante = [];
+        var listaAdulto = document.getElementsByTagName("ul")[0];
+        var listaEstudante = document.getElementsByTagName("ul")[1];
+        document.forms.convidado.addEventListener("submit", criarLista);
+        function criarLista(e) {
+            e.preventDefault();
+            var nome = document.forms.convidado.nome.value;
+            var idade = document.forms.convidado.idade.value;
+            var novoConvidado = { 'Nome': nome, 'Idade': idade };
+            console.log(novoConvidado);
+            novoLi = document.createElement("li");
+            novoLi.textContent = novoConvidado.Nome + " -  " + idade + ".";
+            if (idade >= 18) {
+                adulto.push(novoConvidado);
+                listaAdulto.appendChild(novoLi);
+
+            } else {
+                estudante.push(novoConvidado);
+                listaEstudante.appendChild(novoLi);
+            }
+            document.forms.convidado.reset();
+            document.forms.convidado.nome.focus();
+
+        }
+
+    </script>
+</body>
+
+</html>
