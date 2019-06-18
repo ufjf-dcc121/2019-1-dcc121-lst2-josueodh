@@ -74,14 +74,15 @@
             trHead.appendChild(novoTdVelocidade);
             trHead.appendChild(novoTdIdade);
             document.forms.animal.reset();
+            inseridos++;
             mediaAltura = "Altura média " + (parseInt(mediaAltura) + parseInt(altura))/inseridos;
             mediaPeso = parseInt(mediaPeso) + parseInt(peso);
             mediaVelocidade = parseInt(mediaVelocidade) + parseInt(velocidade);
             mediaIdade = parseInt(mediaIdade) + parseInt(idadeM);
-            inseridos++;
             var footer = document.getElementsByTagName("tfoot")[0];
             var trFooter = document.createElement("tr");
             footer.appendChild(trFooter);
+            trFooter.appendChild()
 
         }
      
