@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt">
 
 <head>
     <meta charset="UTF-8">
@@ -7,32 +7,30 @@
 </head>
 
 <body>
+    <h1>Questão 03</h1>
     <form name="convidado">
-        <label>Nome: </label>
-        <input type="text" name="nome" required placeholder="Digite o nome aqui">
-        <label>Idade: </label>
-        <input type="number" name="idade" required placeholder="Digite a idade aqui">
-        <input type="submit" id="enviar">
+        <input type="hidden" name="id">
+        <label for="nomeFormulario">Nome: </label>
+        <input type="text" name="nome" required id="nomeFormulario">
+        <label for="idadeFormulario">Idade: </label>
+        <input type="number" step="0.01" name="idade" required id="idadeFormulario">
+        <input type="submit" id="botaoSubmit">
     </form>
-    <h2>Adulto</h2>
-    <ul>
+    <button type="button" name="deletar" style="display: none">Apagar</button>
+    <button type="button" name="editar" style="display: none">Editar</button>
+    <table>
+        <h2>Adulto</h2>
+        <ul>
 
-    </ul>
-    <h2>Estudante</h2>
-    <ul>
+        </ul>
+        <h2>Estudante</h2>
+        <ul>
 
-    </ul>
-    <form style="display: none" id="formulario" name="editar">
-        <label>Nome: </label>
-        <input type="text" name="nome" id="nome" required placeholder="Digite o nome aqui">
-        <label>Idade: </label>
-        <input type="number" name="idade" id="idade" required placeholder="Digite a idade aqui">
-        <input type="submit" id="editar" value="Editar">
-    </form>
-    <button type="button">Apagar</button>
+        </ul>
+    </table>
     <script>
-        var adulto = [];
-        var estudante = [];
+        var id = 0;
+        var convidado = [];
         var listaAdulto = document.getElementsByTagName("ul")[0];
         var listaEstudante = document.getElementsByTagName("ul")[1];
         document.forms.convidado.addEventListener("submit", criarLista);
@@ -40,44 +38,74 @@
             e.preventDefault();
             var nome = document.forms.convidado.nome.value;
             var idade = document.forms.convidado.idade.value;
-            var novoConvidado = { 'Nome': nome, 'Idade': idade };
+            var novoConvidado = { 'Id': id, 'Nome': nome, 'Idade': idade };
             novoLi = document.createElement("li");
-            novoLi.addEventListener("click", criarFomulario);
+            novoLi.id = id;
+            novoLi.addEventListener('click', show);
             novoLi.textContent = novoConvidado.Nome + " -  " + idade + ".";
             if (idade >= 18) {
-                adulto.push(novoConvidado);
+                convidado.push(novoConvidado);
                 listaAdulto.appendChild(novoLi);
+                id++;
 
             } else {
-                estudante.push(novoConvidado);
+                convidado.push(novoConvidado);
                 listaEstudante.appendChild(novoLi);
+                id++;
+
             }
-            document.forms.convidado.reset();
-            document.forms.convidado.nome.focus();
-            function criarFomulario() {
-                var form = document.getElementById("formulario");
-                form.style.display = "block";
-                var inputNome = document.getElementById("nome");
-                var inputIdade = document.getElementById("idade");
-                var botao = document.getElementById('editar');
-                inputNome.textContent = nome;
-                inputNome.value = nome;
-                inputIdade.textContent = idade;
-                inputIdade.value = idade;
-                document.forms.editar.addEventListener("submit", editaElemento);
-                function editaElemento(e) {
-                    e.preventDefault();
-                    nome = document.forms.editar.nome.value;
-                    idade = document.forms.editar.idade.value;
-                    var editarConvidado = { 'Nome': nome, 'Idade': idade };
-                    novoLi.textContent = editarConvidado.Nome + " - " + novoConvidado.Idade + ".";
-                 
+            limparFormulario();
+            function show() {
+                var apagar = document.getElementsByTagName("button")[0];
+                var editar = document.getElementsByTagName("button")[1];
+                editar.style.display = "initial";
+                editar.addEventListener('click', editarConvidado);
+                apagar.addEventListener('click', apagarConvidado);
+                apagar.style.display = "initial";
+                document.forms.convidado.nome.value = nome;
+                document.forms.convidado.idade.value = idade;
+                idApagar = novoConvidado.Id;
+                function editarConvidado() {
+                    novoNome = document.convidado.nome.value;
+                    novoIdade = document.convidado.idade.value;
+                    var liEditar = document.getElementsByTagName("li")[idApagar];
+                    if (novoIdade >= 18 && idade >= 18 || novoIdade < 18 && idade < 18) {
+                        liEditar.textContent = novoNome + " - " + novoIdade + ".";
+                        convidado.splice(idApagar, 1, liEditar.innerText);
+                    } else {
+                        apagarConvidado();
+                        if (idade >= 18) {
+                            liEditar.textContent = novoNome + " - " + novoIdade + ".";
+                            listaEstudante.appendChild(liEditar);
+                        } else {
+                            liEditar.textContent = novoNome + " - " + novoIdade + ".";
+                            listaAdulto.appendChild(liEditar);
+                        }
+                        console.log(convidado);
+                    }
+                    editar.style.display = "none";
+                    apagar.style.display = "none";
+                    limparFormulario();
+
                 }
+                function apagarConvidado() {
+                    var liEditar = document.getElementsByTagName("li")[idApagar];
+                    liEditar.textContent = "";
+                    convidado.splice(idApagar, 1);
+                    editar.style.display = "none";
+                    apagar.style.display = "none";
+                    limparFormulario();
+                }
+
+
             }
         }
-
-
+        function limparFormulario() {
+            document.forms.convidado.reset();
+            document.forms.convidado.nome.focus();
+        }
     </script>
+
 </body>
 
 </html>

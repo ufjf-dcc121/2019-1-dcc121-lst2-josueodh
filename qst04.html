@@ -9,20 +9,19 @@
 <body>
     <form name="animal">
         <label>Animal: </label>
-        <input type="text" name="nome" >
+        <input type="text" name="nome">
         <label>Altura: </label>
-        <input type="text" name="altura" >
+        <input type="text" name="altura">
         <label>Peso: </label>
-        <input type="number" step="0.01" name="peso" >
+        <input type="number" step="0.01" name="peso">
         <label>Velociade: </label>
-        <input type="number" name="velocidade" >
+        <input type="number" name="velocidade">
         <label>Idade Máxima: </label>
-        <input type="number" name="idadeM" >
+        <input type="number" name="idadeM">
         <input type="submit">
     </form>
     <br>
     <table>
-        <caption>Tabela para listagem de animais</caption>
         <thead>
             <tr>
                 <th>Animal</th>
@@ -31,23 +30,46 @@
                 <th>Velociade</th>
                 <th>Idade Máxima</th>
             </tr>
-
         </thead>
         <tbody>
-            
-
         </tbody>
-        <tfoot>
-
-        </tfoot>
     </table>
+    <hr>
+    <p>
+        Media de Idade: <span id="idadeMedia">0</span>
+    </p>
+    <p>
+        Media de Altura: <span id="alturaMedia">0</span>
+    </p>
+    <p>
+        Media de Velocidade: <span id="velocidadeMedia">0</span>
+    </p>
+    <p>
+        Media de Peso: <span id="pesoMedia">0</span>
+    </p>
+    <p>
+        Animal mais alto: <span id="alto"></span>
+    </p>
+    <p>
+        Animal mais pesado: <span id="pesado"></span>
+    </p>
+    <p>
+        Animal mais veloz: <span id="veloz"></span>
+    </p>
+    <p>
+        Animal mais longevo: <span id="longevo"></span>
+    </p>
     <script>
         var tabela = document.getElementsByTagName("tbody")[0];
         var mediaAltura = 0;
-        var mediaPeso = 0 ;
+        var mediaPeso = 0;
         var mediaVelocidade = 0;
         var mediaIdade = 0;
-        var inseridos = 0 ;
+        var inseridos = 0;
+        var alto = 0;
+        var velho = 0;
+        var rapido = 0;
+        var pesado = 0;
         document.forms.animal.addEventListener('submit', criarElemento);
         function criarElemento(e) {
             var trHead = document.createElement("tr");
@@ -75,17 +97,32 @@
             trHead.appendChild(novoTdIdade);
             document.forms.animal.reset();
             inseridos++;
-            mediaAltura = "Altura média " + (parseInt(mediaAltura) + parseInt(altura))/inseridos;
-            mediaPeso = parseInt(mediaPeso) + parseInt(peso);
-            mediaVelocidade = parseInt(mediaVelocidade) + parseInt(velocidade);
-            mediaIdade = parseInt(mediaIdade) + parseInt(idadeM);
-            var footer = document.getElementsByTagName("tfoot")[0];
-            var trFooter = document.createElement("tr");
-            footer.appendChild(trFooter);
-            trFooter.appendChild()
-
+            mediaAltura = (parseInt(mediaAltura) + parseInt(altura)) / inseridos;
+            mediaPeso = (parseInt(mediaPeso) + parseInt(peso)) / inseridos;
+            mediaVelocidade = (parseInt(mediaVelocidade) + parseInt(velocidade)) / inseridos;
+            mediaIdade = (parseInt(mediaIdade) + parseInt(idadeM)) / inseridos;
+            document.getElementById("idadeMedia").textContent = mediaIdade;
+            document.getElementById("velocidadeMedia").textContent = mediaVelocidade;
+            document.getElementById("alturaMedia").textContent = mediaAltura;
+            document.getElementById("pesoMedia").textContent = mediaPeso;
+            if(alto <= altura){
+                alto = altura;
+                document.getElementById("alto").textContent = nome;
+            }
+            if(velho <= idadeM){
+                velho = idadeM;
+                document.getElementById("longevo").textContent = nome;                
+            }
+            if(pesado <= peso){
+                pesado = peso;
+                document.getElementById("pesado").textContent = nome;
+            }
+            if(rapido <= velocidade){
+                rapido = velocidade;
+                document.getElementById("veloz").textContent = nome;
+            }
         }
-     
+
     </script>
 </body>
 
