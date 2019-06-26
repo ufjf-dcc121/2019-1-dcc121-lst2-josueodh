@@ -29,80 +29,87 @@
         </ul>
     </table>
     <script>
-        var id = 0;
         var convidado = [];
+        var id = 0;
         var listaAdulto = document.getElementsByTagName("ul")[0];
         var listaEstudante = document.getElementsByTagName("ul")[1];
         document.forms.convidado.addEventListener("submit", criarLista);
+        desenhaLista();
         function criarLista(e) {
             e.preventDefault();
             var nome = document.forms.convidado.nome.value;
             var idade = document.forms.convidado.idade.value;
             var novoConvidado = { 'Id': id, 'Nome': nome, 'Idade': idade };
-            novoLi = document.createElement("li");
-            novoLi.id = id;
-            novoLi.addEventListener('click', show);
-            novoLi.textContent = novoConvidado.Nome + " -  " + idade + ".";
-            if (idade >= 18) {
-                convidado.push(novoConvidado);
-                listaAdulto.appendChild(novoLi);
-                id++;
-
-            } else {
-                convidado.push(novoConvidado);
-                listaEstudante.appendChild(novoLi);
-                id++;
-
-            }
+            convidado.push(novoConvidado);
+            desenhaLista();
             limparFormulario();
-            function show() {
-                var apagar = document.getElementsByTagName("button")[0];
-                var editar = document.getElementsByTagName("button")[1];
-                editar.style.display = "initial";
-                editar.addEventListener('click', editarConvidado);
-                apagar.addEventListener('click', apagarConvidado);
-                apagar.style.display = "initial";
-                document.forms.convidado.nome.value = nome;
-                document.forms.convidado.idade.value = idade;
-                idApagar = novoConvidado.Id;
-                function editarConvidado() {
-                    novoNome = document.convidado.nome.value;
-                    novoIdade = document.convidado.idade.value;
-                    var liEditar = document.getElementsByTagName("li")[idApagar];
-                    if (novoIdade >= 18 && idade >= 18 || novoIdade < 18 && idade < 18) {
-                        liEditar.textContent = novoNome + " - " + novoIdade + ".";
-                        convidado.splice(idApagar, 1, liEditar.innerText);
-                    } else {
-                        apagarConvidado();
-                        if (idade >= 18) {
-                            liEditar.textContent = novoNome + " - " + novoIdade + ".";
-                            listaEstudante.appendChild(liEditar);
-                        } else {
-                            liEditar.textContent = novoNome + " - " + novoIdade + ".";
-                            listaAdulto.appendChild(liEditar);
-                        }
-                        console.log(convidado);
+            id++;
+        }
+        function criaOuvinte(idShow) {
+            return function show() {
+                botoes();
+                for (var i = 0; i < convidado.length; i++) {
+                    if (i == idShow) {
+                        document.forms.convidado.id.value = convidado[i].Id;
+                        document.forms.convidado.nome.value = convidado[i].Nome;
+                        document.forms.convidado.idade.value = convidado[i].Idade;
                     }
-                    editar.style.display = "none";
-                    apagar.style.display = "none";
-                    limparFormulario();
-
                 }
-                function apagarConvidado() {
-                    var liEditar = document.getElementsByTagName("li")[idApagar];
-                    liEditar.textContent = "";
-                    convidado.splice(idApagar, 1);
-                    editar.style.display = "none";
-                    apagar.style.display = "none";
-                    limparFormulario();
-                }
-
-
             }
+        }
+        function editarConvidado() {
+            var idEditar = document.convidado.id.value;
+            var nomeEditar = document.convidado.nome.value;
+            var idadeEditar = document.convidado.idade.value;
+            var novoConvidado = { 'Id': idEditar, 'Nome': nomeEditar, 'Idade': idadeEditar };
+            convidado.splice(idEditar, 1, novoConvidado);
+            limparFormulario();
+            escondeBotao();
+            desenhaLista();
+        }
+        function apagarConvidado() {
+            var idApagar = document.convidado.id.value;
+            convidado.splice(idApagar, 1, "");
+            limparFormulario();
+            escondeBotao();
+            desenhaLista();
+        }
+        function botoes() {
+            var apagar = document.getElementsByTagName("button")[0];
+            var editar = document.getElementsByTagName("button")[1];
+            editar.style.display = "initial";
+            apagar.style.display = "initial";
+            editar.addEventListener('click', editarConvidado);
+            apagar.addEventListener('click', apagarConvidado);
         }
         function limparFormulario() {
             document.forms.convidado.reset();
             document.forms.convidado.nome.focus();
+        }
+
+        function escondeBotao() {
+
+            var apagar = document.getElementsByTagName("button")[0];
+            var editar = document.getElementsByTagName("button")[1];
+            editar.style.display = "none";
+            apagar.style.display = "none";
+        }
+        function desenhaLista() {
+            listaAdulto.innerHTML = "";
+            listaEstudante.innerHTML = "";
+            for (var i = 0; i < convidado.length; i++) {
+                var novoLi = document.createElement("li");
+                novoLi.addEventListener("click", criaOuvinte(convidado[i].Id));
+                if (convidado[i] != "") {
+                    novoLi.textContent = convidado[i].Id + " " + convidado[i].Nome + " -  " + convidado[i].Idade + ".";
+                    if (convidado[i].Idade >= 18) {
+                        listaAdulto.appendChild(novoLi);
+                    } else {
+                        listaEstudante.appendChild(novoLi);
+                    }
+
+                }
+            }
         }
     </script>
 
